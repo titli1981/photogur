@@ -4,13 +4,36 @@ class PicturesController < ApplicationController
   end
 
   #DISPLAY
-L def show
+ def show
      @picture = Picture.find(params[:id])
   end
 
   def new
      @picture = Picture.new
   end
+  #UPDATE
+    def edit
+      @picture = Picture.find(params[:id])
+    end
+
+    def update
+      @picture = Picture.find(params[:id])
+
+      if @picture.update_attributes(picture_params)
+        redirect_to "/pictures/#{@picture.id}"
+      else
+        render :edit
+      end
+    end
+
+    
+# DELETE
+    def destroy
+     @picture = Picture.find(params[:id])
+     @picture.destroy
+     redirect_to pictures_url
+    end
+
 
    #CREATE
 
@@ -29,21 +52,6 @@ L def show
    private
   def picture_params
      params.require(:picture).permit(:artist, :title, :url)
-  end
-
-#UPDATE
-  def edit
-    @picture = Picture.find(params[:id])
-  end
-
-  def update
-    @picture = Picture.find(params[:id])
-
-    if @picture.update_attributes(picture_params)
-      redirect_to "/pictures/#{@picture.id}"
-    else
-      render :edit
-    end
   end
 
 
